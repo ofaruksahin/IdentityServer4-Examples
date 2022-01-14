@@ -1,0 +1,5 @@
+﻿5000 -> AuthServer
+5001 -> Client1
+5002 -> Client2
+5010 -> API1
+5011 -> API2
