@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace IdentityServer.API2
 {
@@ -22,14 +16,23 @@ namespace IdentityServer.API2
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+                {
+                    //JWT tokeni yayınlayan server url verilmesi gerekiyor.
+                    //Burası sayesinde sistem gidip serverden public key alacak ve token doğru mu ? yayınlayıcı kontrolü yapıyor.
+                    options.Authority = "https://localhost:5001";
+                    //Gelen token içerisinde aud property içerisinde bu değer olması gerekiyor.
+                    //Audience değeri kaynak ismini belirtiyor. Yani bu servis bir kaynak oluyor bu kaynaktan veri isteyen token içerisinde
+                    //aud içerisinde benim servisimin adı olması gerekiyor
+                    options.Audience = "resource_api2";
+                });
             services.AddControllers();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -41,6 +44,7 @@ namespace IdentityServer.API2
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -18,7 +18,7 @@
     "IdentityServer.Client1": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:5001",
+      "applicationUrl": "http://localhost:5010;https://localhost:5011;",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

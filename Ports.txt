@@ -1,5 +1,10 @@
 ﻿5000 -> AuthServer
-5001 -> Client1
-5002 -> Client2
-5010 -> API1
-5011 -> API2
+5001 -> AuthServer With SSL
+5010 -> Client1
+5011 -> Client1 With SSL
+5012 -> Client2
+5013 -> Client2 With SSL
+5020 -> API1
+5021 -> API1 With SSL
+5022 -> API2
+5023 -> API2 With SSL
