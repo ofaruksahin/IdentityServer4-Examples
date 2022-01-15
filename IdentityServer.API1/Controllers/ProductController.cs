@@ -32,5 +32,12 @@ namespace IdentityServer.API1.Controllers
             };
             return Ok(products);
         }
+
+        [HttpPost]
+        [Authorize(policy: "UpdateOrCreate")]
+        public IActionResult UpdateProduct(int id)
+        {
+            return Ok();
+        }
     }
 }

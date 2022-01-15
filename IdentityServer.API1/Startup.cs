@@ -31,6 +31,21 @@ namespace IdentityServer.API1
                     options.Audience = "resource_api1";
                 });
 
+            //Burada kullanıcı neye göre authorize olacak onu tanımlamak için kullanıyoruz.
+            services.AddAuthorization(options =>
+            {
+                //Koşullar policyler ile tanımlanıyor
+                options.AddPolicy("ReadProduct", policyOptions =>
+                 {
+                     policyOptions.RequireClaim("scope","api1.read"); //scope alanında api1.read alanına göre yetkilendirme yapacağım
+                 });
+
+                options.AddPolicy("UpdateOrCreate", policyOptions =>
+                 {
+                     //scope alanında api1.write, api1.update alanına göre yetkilendirme yapacağım.
+                     policyOptions.RequireClaim("scope", new[] { "api1.write","api1.update"});
+                 });
+            });
 
             services.AddControllers();
         }
