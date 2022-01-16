@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 namespace IdentityServer.Client1
 {
@@ -20,13 +21,17 @@ namespace IdentityServer.Client1
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.Configure<ClientOptions>(Configuration.GetSection("Client")); //IOptions<T> sınıfında bir objeyi DI container'a ekliyor
+            services.AddSingleton<ClientOptions>(sp => //DI Eklenen IOptions<T> nesnesini singleton olarak di container'a ekliyorum.
+            {
+                var instance = sp.GetRequiredService<IOptions<ClientOptions>>();
+                return instance.Value;
+            });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -36,7 +41,6 @@ namespace IdentityServer.Client1
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
             app.UseHttpsRedirection();

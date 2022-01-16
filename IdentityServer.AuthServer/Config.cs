@@ -11,11 +11,13 @@ namespace IdentityServer.AuthServer
             {
                 new ApiResource("resource_api1")
                 {
-                    Scopes = new List<string>{"api1.read","api1.write","api1.update"}
+                    Scopes = new List<string>{"api1.read","api1.write","api1.update"},
+                    ApiSecrets = new[]{new Secret("secretapi1".Sha256())}
                 },
                 new ApiResource("resource_api2")
                 {
-                    Scopes = new List<string>{"api2.read","api2.write","api2.update"}
+                    Scopes = new List<string>{"api2.read","api2.write","api2.update"},
+                    ApiSecrets = new[]{new Secret("secretapi2".Sha256())}
                 }
             };
         }

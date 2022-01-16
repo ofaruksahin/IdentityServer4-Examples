@@ -4,4 +4,14 @@
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="IdentityModel" />
+    <None Remove="Views\Product\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="IdentityModel" Version="6.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\Product\" />
+  </ItemGroup>
 </Project>
