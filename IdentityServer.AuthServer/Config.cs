@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Security.Claims;
 using IdentityServer4.Models;
+using IdentityServer4.Test;
 
 namespace IdentityServer.AuthServer
 {
@@ -66,6 +69,46 @@ namespace IdentityServer.AuthServer
                     AllowedScopes =
                     {
                         "api1.read","api2.write","api2.update"
+                    }
+                }
+            };
+        }
+
+        //Token içerisinde kullanıcı ile ilgili hangi bilgiler olacak.
+        public static IEnumerable<IdentityResource> GetIdentityResources() 
+        {
+            return new List<IdentityResource>
+            {
+                 new IdentityResources.OpenId(), //Token içerisinde kullanıcı idsi olmasını istediğimi belirtiyorum.
+                 new IdentityResources.Profile(), //Kullanıcı profili ile ilgili bilgileri erişebilir onu belirtiyorum
+            };
+        }
+
+        // InMemory'de saklayacağım test kullanıcıları oluşturmak için kullanıyorum.
+        public static List<TestUser> GetUsers()
+        {
+            return new List<TestUser>
+            {
+                new TestUser
+                {
+                    SubjectId  = "1", //Kullanıcı idsine karşılık gelecek
+                    Username = "ofaruksahin@outlook.com.tr",
+                    Password = "123",
+                    Claims = new List<Claim>
+                    {
+                        new Claim("given_name","Ömer Faruk"),
+                        new Claim("family_name","Şahin")
+                    }
+                },
+                new TestUser
+                {
+                    SubjectId = "2",
+                    Username = "harunsahin@outlook.com.tr",
+                    Password = "",
+                    Claims = new List<Claim>
+                    {
+                          new Claim("given_name","Harun"),
+                        new Claim("family_name","Şahin")
                     }
                 }
             };
