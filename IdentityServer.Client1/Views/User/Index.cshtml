@@ -1,0 +1,46 @@
+﻿@{
+
+}
+@using Microsoft.AspNetCore.Authentication;
+
+<h3>This page show only authenticated users</h3>
+
+<h3>Claims</h3>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Claim Key</th>
+            <th>Claim Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in User.Claims)
+        {
+            <tr>
+                <td>@item.Type</td>
+                <td>@item.Value</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>Authentication Values</h3>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Auth property key</th>
+            <th>Auth property value</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in (await Context.AuthenticateAsync()).Properties.Items)
+        {
+            <tr>
+                <td>@item.Key</td>
+                <td>@item.Value</td>
+            </tr>
+        }
+    </tbody>
+</table>

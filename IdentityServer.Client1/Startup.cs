@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -30,6 +25,25 @@ namespace IdentityServer.Client1
                 var instance = sp.GetRequiredService<IOptions<ClientOptions>>();
                 return instance.Value;
             });
+
+            services.AddAuthentication(options =>
+            {
+                //Burada bir authentication schema tanımlıyorum
+                options.DefaultScheme = "Cookies";
+                options.DefaultChallengeScheme = "oidc";
+            }).AddCookie("Cookies") //Burada cookie based bir authentication yapmak istediğimi belirtiyorum ve bir şema adı belirtiyorum.
+            .AddOpenIdConnect("oidc",options => //Burada cookie based authentication ile openidconnect entegrasyonu yapıyorum.
+            {
+                options.SignInScheme = "Cookies"; //Burada openidconnect ile kullandığım şemanın adını belirtiyorum.
+                options.Authority = Configuration.GetValue<string>("Client:AuthorityUrl"); //token dağıtmaktan yetkili server url bilgimi veriyorum.
+                options.ClientId = "Client1-MVC"; 
+                options.ClientSecret = "secret";
+                options.ResponseType = "code id_token"; //Burada identity server bana ne dönmeli onu söylüyorum.
+                //Identity Serverdan bir authorization code ve idtoken istediğimi belirtiyorum.
+
+                options.GetClaimsFromUserInfoEndpoint = true; //UserInfo endpointine giderek claimleri alacak
+            });
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -48,6 +62,7 @@ namespace IdentityServer.Client1
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

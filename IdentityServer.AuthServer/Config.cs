@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Security.Claims;
+using IdentityServer4;
 using IdentityServer4.Models;
 using IdentityServer4.Test;
 
@@ -70,7 +70,29 @@ namespace IdentityServer.AuthServer
                     {
                         "api1.read","api2.write","api2.update"
                     }
-                }
+                },
+                new Client
+                {
+                    ClientName = "Client1 Application (MVC)",
+                    ClientId = "Client1-MVC",
+                    ClientSecrets = new[]
+                    {
+                        new Secret("secret".Sha256())
+                    },
+                    AllowedGrantTypes = GrantTypes.Hybrid,
+                    RedirectUris = new List<string>
+                    {
+                        "https://localhost:5011/signin-oidc"
+                    },
+                    AllowedScopes = new List<string>
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "api1.read"
+                    },
+                    //SPA veya Mobil cihazlar örneklerinde oluşacak clientlarda bu senaryo testini yapacağım.
+                    RequirePkce = false, //Require Proof Key For Code
+                },
             };
         }
 
@@ -104,7 +126,7 @@ namespace IdentityServer.AuthServer
                 {
                     SubjectId = "2",
                     Username = "harunsahin@outlook.com.tr",
-                    Password = "",
+                    Password = "123",
                     Claims = new List<Claim>
                     {
                           new Claim("given_name","Harun"),

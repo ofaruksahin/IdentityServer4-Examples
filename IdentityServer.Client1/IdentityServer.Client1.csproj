@@ -7,11 +7,15 @@
   <ItemGroup>
     <None Remove="IdentityModel" />
     <None Remove="Views\Product\" />
+    <None Remove="Microsoft.AspNetCore.Authentication.OpenIdConnect" />
+    <None Remove="Views\User\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="IdentityModel" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="6.0.1" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Product\" />
+    <Folder Include="Views\User\" />
   </ItemGroup>
 </Project>
