@@ -42,6 +42,8 @@ namespace IdentityServer.Client1
                 //Identity Serverdan bir authorization code ve idtoken istediğimi belirtiyorum.
 
                 options.GetClaimsFromUserInfoEndpoint = true; //UserInfo endpointine giderek claimleri alacak
+                options.SaveTokens = true; //Eğer oturum başarıyla açıldıysa claimleri alırken tokenleri de almak için kullanılır.
+                options.Scope.Add("api1.read"); //Token içerisinde olan scopeları almak için kullanıyorum.
             });
 
         }
