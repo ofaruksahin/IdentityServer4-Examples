@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using IdentityServer4;
 using IdentityServer4.Models;
@@ -88,10 +89,23 @@ namespace IdentityServer.AuthServer
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "api1.read"
+                        IdentityServerConstants.StandardScopes.OfflineAccess,
+                        "api1.read",
+                        "CountryAndCity",
+                        "Roles"
                     },
                     //SPA veya Mobil cihazlar örneklerinde oluşacak clientlarda bu senaryo testini yapacağım.
                     RequirePkce = false, //Require Proof Key For Code
+                    AllowOfflineAccess = true, //Token ile birlikte refresh_token almak için kullanıyorum.
+                    AccessTokenLifetime = (int)TimeSpan.FromHours(2).TotalSeconds, //access_token için 2 saatlik bir ömür belirledim.
+                    RefreshTokenUsage = TokenUsage.ReUse, //Refresh token birden fazla kez kullanılabilir dedim
+                    AbsoluteRefreshTokenLifetime = (int)TimeSpan.FromDays(60).TotalSeconds, //Refresh token için 60 gün bir ömür verdim.
+                    RefreshTokenExpiration = TokenExpiration.Absolute, //refresh_token ömrü kullandıkça artmaması için bunu belirledim.
+                    PostLogoutRedirectUris = new List<string>
+                    {
+                        "https://localhost:5011/signout-callback-oidc"
+                    },
+                    RequireConsent = true, //Onay sayfası çıkarmak için true yapıyoruz
                 },
             };
         }
@@ -103,6 +117,26 @@ namespace IdentityServer.AuthServer
             {
                  new IdentityResources.OpenId(), //Token içerisinde kullanıcı idsi olmasını istediğimi belirtiyorum.
                  new IdentityResources.Profile(), //Kullanıcı profili ile ilgili bilgileri erişebilir onu belirtiyorum
+                 new IdentityResource
+                 {
+                     Name = "CountryAndCity",
+                     DisplayName = "Country and City",
+                     Description = "User country and city info",
+                     UserClaims =
+                     {
+                         "country","city"
+                     }
+                 },
+                 new IdentityResource
+                 {
+                     Name = "Roles",
+                     DisplayName = "Roles",
+                     Description = "User Roles",
+                     UserClaims =
+                     {
+                         "role"
+                     }
+                 }
             };
         }
 
@@ -119,7 +153,10 @@ namespace IdentityServer.AuthServer
                     Claims = new List<Claim>
                     {
                         new Claim("given_name","Ömer Faruk"),
-                        new Claim("family_name","Şahin")
+                        new Claim("family_name","Şahin"),
+                        new Claim("country","Türkiye"),
+                        new Claim("city","İstanbul"),
+                        new Claim("role","admin"),
                     }
                 },
                 new TestUser
@@ -129,8 +166,11 @@ namespace IdentityServer.AuthServer
                     Password = "123",
                     Claims = new List<Claim>
                     {
-                          new Claim("given_name","Harun"),
-                        new Claim("family_name","Şahin")
+                        new Claim("given_name","Harun"),
+                        new Claim("family_name","Şahin"),
+                        new Claim("country","Türkiye"),
+                        new Claim("city","İstanbul"),
+                        new Claim("role","member")
                     }
                 }
             };

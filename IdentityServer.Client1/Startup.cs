@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace IdentityServer.Client1
 {
@@ -31,7 +33,9 @@ namespace IdentityServer.Client1
                 //Burada bir authentication schema tanımlıyorum
                 options.DefaultScheme = "Cookies";
                 options.DefaultChallengeScheme = "oidc";
-            }).AddCookie("Cookies") //Burada cookie based bir authentication yapmak istediğimi belirtiyorum ve bir şema adı belirtiyorum.
+            }).AddCookie("Cookies",options => {
+                options.AccessDeniedPath = "/Home/AccessDenied";
+            }) //Burada cookie based bir authentication yapmak istediğimi belirtiyorum ve bir şema adı belirtiyorum.
             .AddOpenIdConnect("oidc",options => //Burada cookie based authentication ile openidconnect entegrasyonu yapıyorum.
             {
                 options.SignInScheme = "Cookies"; //Burada openidconnect ile kullandığım şemanın adını belirtiyorum.
@@ -44,6 +48,18 @@ namespace IdentityServer.Client1
                 options.GetClaimsFromUserInfoEndpoint = true; //UserInfo endpointine giderek claimleri alacak
                 options.SaveTokens = true; //Eğer oturum başarıyla açıldıysa claimleri alırken tokenleri de almak için kullanılır.
                 options.Scope.Add("api1.read"); //Token içerisinde olan scopeları almak için kullanıyorum.
+                options.Scope.Add("offline_access");
+                options.Scope.Add("CountryAndCity");
+                options.Scope.Add("Roles");
+
+                options.ClaimActions.MapUniqueJsonKey("country", "country");
+                options.ClaimActions.MapUniqueJsonKey("city", "city");
+                options.ClaimActions.MapUniqueJsonKey("role", "role");
+
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    RoleClaimType = "role" //Role based authentication için hangi role claimini kullanacağını belirtiyoruz.
+                };
             });
 
         }
