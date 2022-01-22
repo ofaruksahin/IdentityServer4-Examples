@@ -107,6 +107,41 @@ namespace IdentityServer.AuthServer
                     },
                     RequireConsent = true, //Onay sayfası çıkarmak için true yapıyoruz
                 },
+                new Client
+                {
+                    ClientName = "Client2 Application (MVC)",
+                    ClientId = "Client2-MVC",
+                    ClientSecrets = new[]
+                    {
+                        new Secret("secret".Sha256())
+                    },
+                    AllowedGrantTypes = GrantTypes.Hybrid,
+                    RedirectUris = new List<string>
+                    {
+                        "https://localhost:5013/signin-oidc"
+                    },
+                    AllowedScopes = new List<string>
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.OfflineAccess,
+                        "api1.read",
+                        "CountryAndCity",
+                        "Roles"
+                    },
+                    //SPA veya Mobil cihazlar örneklerinde oluşacak clientlarda bu senaryo testini yapacağım.
+                    RequirePkce = false, //Require Proof Key For Code
+                    AllowOfflineAccess = true, //Token ile birlikte refresh_token almak için kullanıyorum.
+                    AccessTokenLifetime = (int)TimeSpan.FromHours(2).TotalSeconds, //access_token için 2 saatlik bir ömür belirledim.
+                    RefreshTokenUsage = TokenUsage.ReUse, //Refresh token birden fazla kez kullanılabilir dedim
+                    AbsoluteRefreshTokenLifetime = (int)TimeSpan.FromDays(60).TotalSeconds, //Refresh token için 60 gün bir ömür verdim.
+                    RefreshTokenExpiration = TokenExpiration.Absolute, //refresh_token ömrü kullandıkça artmaması için bunu belirledim.
+                    PostLogoutRedirectUris = new List<string>
+                    {
+                        "https://localhost:5013 /signout-callback-oidc"
+                    },
+                    RequireConsent = true, //Onay sayfası çıkarmak için true yapıyoruz
+                },
             };
         }
 

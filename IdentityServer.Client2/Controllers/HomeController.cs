@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using IdentityServer.Client2.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IdentityServer.Client2.Controllers
 {
@@ -32,6 +33,12 @@ namespace IdentityServer.Client2.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [Authorize]
+        public IActionResult User()
+        {
+            return View();
         }
     }
 }
