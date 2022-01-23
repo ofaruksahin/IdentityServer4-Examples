@@ -138,7 +138,7 @@ namespace IdentityServer.AuthServer
                     RefreshTokenExpiration = TokenExpiration.Absolute, //refresh_token ömrü kullandıkça artmaması için bunu belirledim.
                     PostLogoutRedirectUris = new List<string>
                     {
-                        "https://localhost:5013 /signout-callback-oidc"
+                        "https://localhost:5013/signout-callback-oidc"
                     },
                     RequireConsent = true, //Onay sayfası çıkarmak için true yapıyoruz
                 },

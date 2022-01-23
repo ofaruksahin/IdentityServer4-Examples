@@ -2,17 +2,25 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using IdentityModel.Client;
+using IdentityServer.Client1.Services;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace IdentityServer.Client1.Controllers
 {
     public class ProductController : Controller
     {
         private readonly ClientOptions _clientOptions;
+        private readonly IApiResourceHttpClient _apiResourceHttpClient;
 
-        public ProductController(ClientOptions clientOptions)
+        public ProductController(
+            ClientOptions clientOptions,
+            IApiResourceHttpClient apiResourceHttpClient
+            )
         {
             _clientOptions = clientOptions;
+            _apiResourceHttpClient = apiResourceHttpClient;
         }
 
         public async Task<IActionResult> Index()
@@ -41,7 +49,9 @@ namespace IdentityServer.Client1.Controllers
                 throw token.Exception;
             }
 
-            httpClient.SetBearerToken(token.AccessToken);
+            //httpClient.SetBearerToken(token.AccessToken);
+            var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
+            httpClient.SetBearerToken(accessToken);
             var response = await httpClient.GetAsync("https://localhost:5021/api/products/GetProducts");
 
             if (response.IsSuccessStatusCode)
@@ -56,6 +66,18 @@ namespace IdentityServer.Client1.Controllers
             }
 
             return View();
+        }
+
+        public async Task<IActionResult> Index2()
+        {
+            var client = await _apiResourceHttpClient.GetHttpClient();
+            var response = await client.GetAsync("https://localhost:5021/api/products/GetProducts");
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                Console.WriteLine(content);
+            }
+            return Ok(new { });
         }
     }
 }

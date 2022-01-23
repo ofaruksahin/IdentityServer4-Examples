@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using IdentityServer.Client1.Services;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -21,6 +22,8 @@ namespace IdentityServer.Client1
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddHttpContextAccessor();
+            services.AddScoped<IApiResourceHttpClient, ApiResourceHttpClient>();
             services.Configure<ClientOptions>(Configuration.GetSection("Client")); //IOptions<T> sınıfında bir objeyi DI container'a ekliyor
             services.AddSingleton<ClientOptions>(sp => //DI Eklenen IOptions<T> nesnesini singleton olarak di container'a ekliyorum.
             {
