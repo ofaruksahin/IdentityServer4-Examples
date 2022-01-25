@@ -90,6 +90,7 @@ namespace IdentityServer.AuthServer
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.OfflineAccess,
+                        IdentityServerConstants.StandardScopes.Email,
                         "api1.read",
                         "CountryAndCity",
                         "Roles"
@@ -150,6 +151,7 @@ namespace IdentityServer.AuthServer
         {
             return new List<IdentityResource>
             {
+                new IdentityResources.Email(),
                  new IdentityResources.OpenId(), //Token içerisinde kullanıcı idsi olmasını istediğimi belirtiyorum.
                  new IdentityResources.Profile(), //Kullanıcı profili ile ilgili bilgileri erişebilir onu belirtiyorum
                  new IdentityResource

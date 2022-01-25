@@ -54,6 +54,7 @@ namespace IdentityServer.Client1
                 options.Scope.Add("offline_access");
                 options.Scope.Add("CountryAndCity");
                 options.Scope.Add("Roles");
+                options.Scope.Add("email");
 
                 options.ClaimActions.MapUniqueJsonKey("country", "country");
                 options.ClaimActions.MapUniqueJsonKey("city", "city");
@@ -61,7 +62,8 @@ namespace IdentityServer.Client1
 
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    RoleClaimType = "role" //Role based authentication için hangi role claimini kullanacağını belirtiyoruz.
+                    RoleClaimType = "role", //Role based authentication için hangi role claimini kullanacağını belirtiyoruz.
+                    NameClaimType = "name" //HttpContext.User.Name dendiğinde hangi scopedan data çekeceğini belirtmek için kullanıyorum
                 };
             });
 

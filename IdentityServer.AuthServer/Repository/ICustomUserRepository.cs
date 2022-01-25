@@ -3,7 +3,7 @@ using IdentityServer.AuthServer.Models;
 
 namespace IdentityServer.AuthServer.Repository
 {
-    internal interface ICustomUserRepository
+    public interface ICustomUserRepository
     {
         Task<bool> Validate(string email, string password);
         Task<CustomUser> FindById(int id);
