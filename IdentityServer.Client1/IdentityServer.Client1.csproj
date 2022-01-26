@@ -10,6 +10,7 @@
     <None Remove="Microsoft.AspNetCore.Authentication.OpenIdConnect" />
     <None Remove="Views\User\" />
     <None Remove="Services\" />
+    <None Remove="Views\Login\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="IdentityModel" Version="6.0.0" />
@@ -19,5 +20,6 @@
     <Folder Include="Views\Product\" />
     <Folder Include="Views\User\" />
     <Folder Include="Services\" />
+    <Folder Include="Views\Login\" />
   </ItemGroup>
 </Project>

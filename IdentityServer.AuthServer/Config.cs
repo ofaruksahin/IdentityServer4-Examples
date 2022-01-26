@@ -143,6 +143,62 @@ namespace IdentityServer.AuthServer
                     },
                     RequireConsent = true, //Onay sayfası çıkarmak için true yapıyoruz
                 },
+                new Client
+                {
+                    ClientId = "angular-client",
+                    RequireClientSecret = false,
+                    ClientName="angular-client",
+                    AllowedGrantTypes = GrantTypes.Code,
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
+                        IdentityServerConstants.StandardScopes.OfflineAccess,
+                        "api1.read",
+                        "CountryAndCity",
+                        "Roles"
+                    },
+                    RedirectUris =
+                    {
+                        "http://localhost:4200/callback"
+                    },
+                    AllowedCorsOrigins =
+                    {
+                        "http://localhost:4200"
+                    },
+                    PostLogoutRedirectUris =
+                    {
+                        "http://localhost:4200"
+                    },
+                },
+                new Client
+                {
+                    ClientName = "Client1 Application (MVC)",
+                    ClientId = "client1-resource-owner",
+                    ClientSecrets = new[]
+                    {
+                        new Secret("secret".Sha256())
+                    },
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+                    AllowedScopes = new List<string>
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.OfflineAccess,
+                        IdentityServerConstants.StandardScopes.Email,
+                        "api1.read",
+                        "CountryAndCity",
+                        "Roles"
+                    },
+                    //SPA veya Mobil cihazlar örneklerinde oluşacak clientlarda bu senaryo testini yapacağım.
+                    RequirePkce = false, //Require Proof Key For Code
+                    AllowOfflineAccess = true, //Token ile birlikte refresh_token almak için kullanıyorum.
+                    AccessTokenLifetime = (int)TimeSpan.FromHours(2).TotalSeconds, //access_token için 2 saatlik bir ömür belirledim.
+                    RefreshTokenUsage = TokenUsage.ReUse, //Refresh token birden fazla kez kullanılabilir dedim
+                    AbsoluteRefreshTokenLifetime = (int)TimeSpan.FromDays(60).TotalSeconds, //Refresh token için 60 gün bir ömür verdim.
+                    RefreshTokenExpiration = TokenExpiration.Absolute, //refresh_token ömrü kullandıkça artmaması için bunu belirledim.
+                 }
             };
         }
 

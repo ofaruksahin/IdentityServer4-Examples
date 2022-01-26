@@ -1,6 +1,38 @@
 
-# Created by https://www.toptal.com/developers/gitignore/api/macos,dotnetcore,aspnetcore
-# Edit at https://www.toptal.com/developers/gitignore?templates=macos,dotnetcore,aspnetcore
+# Created by https://www.toptal.com/developers/gitignore/api/windows,macos,angular,vue,react,dotnetcore,aspnetcore
+# Edit at https://www.toptal.com/developers/gitignore?templates=windows,macos,angular,vue,react,dotnetcore,aspnetcore
+
+### Angular ###
+## Angular ##
+# compiled output
+dist/
+tmp/
+app/**/*.js
+app/**/*.js.map
+
+# dependencies
+node_modules/
+bower_components/
+
+# IDEs and editors
+.idea/
+
+# misc
+.sass-cache/
+connect.lock/
+coverage/
+libpeerconnection.log/
+npm-debug.log
+testem.log
+typings/
+.angular/
+
+# e2e
+e2e/*.js
+e2e/*.map
+
+# System Files
+.DS_Store/
 
 ### ASPNETCore ###
 ## Ignore Visual Studio temporary files, build results, and
@@ -129,7 +161,6 @@ nCrunchTemp_*
 AutoTest.Net/
 
 # Web workbench (sass)
-.sass-cache/
 
 # Installshield output folder
 [Ee]xpress/
@@ -201,7 +232,6 @@ ClientBin/
 *.jfm
 *.pfx
 *.publishsettings
-node_modules/
 orleans.codegen.cs
 
 # Since there are multiple workflows, uncomment next line to ignore bower_components
@@ -259,7 +289,6 @@ paket-files/
 .fake/
 
 # JetBrains Rider
-.idea/
 *.sln.iml
 
 # CodeRush
@@ -310,4 +339,56 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-# End of https://www.toptal.com/developers/gitignore/api/macos,dotnetcore,aspnetcore
+### react ###
+.DS_*
+logs
+**/*.backup.*
+**/*.back.*
+
+node_modules
+bower_components
+
+*.sublime*
+
+psd
+thumb
+sketch
+
+### Vue ###
+# gitignore template for Vue.js projects
+#
+# Recommended template: Node.gitignore
+
+# TODO: where does this rule come from?
+docs/_book
+
+# TODO: where does this rule come from?
+test/
+
+### Windows ###
+# Windows thumbnail cache files
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+
+# Dump file
+*.stackdump
+
+# Folder config file
+[Dd]esktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+# End of https://www.toptal.com/developers/gitignore/api/windows,macos,angular,vue,react,dotnetcore,aspnetcore
