@@ -21,10 +21,11 @@ namespace IdentityServer.Client1.Controllers
         }
 
         [HttpGet]
-        public async Task LogOut()
+        public async Task<IActionResult> LogOut()
         {
             await HttpContext.SignOutAsync("Cookies");
-            await HttpContext.SignOutAsync("oidc");
+            //await HttpContext.SignOutAsync("oidc"); //IdentityServer üzerinde bulunan oturumu kapatmak için kullanılır.
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
@@ -42,7 +43,8 @@ namespace IdentityServer.Client1.Controllers
             }
 
             RefreshTokenRequest refreshTokenRequest = new RefreshTokenRequest();
-            refreshTokenRequest.ClientId = "Client1-MVC";
+            //refreshTokenRequest.ClientId = "Client1-MVC";
+            refreshTokenRequest.ClientId = "client1-resource-owner";
             refreshTokenRequest.ClientSecret = "secret";
             refreshTokenRequest.RefreshToken = refreshToken;
             refreshTokenRequest.Address = disco.TokenEndpoint;

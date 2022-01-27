@@ -1,4 +1,5 @@
-﻿using IdentityServer.AuthServer.Models;
+﻿using System.Reflection;
+using IdentityServer.AuthServer.Models;
 using IdentityServer.AuthServer.Repository;
 using IdentityServer.AuthServer.Services;
 using Microsoft.AspNetCore.Builder;
@@ -28,12 +29,26 @@ namespace IdentityServer.AuthServer
 
             services.AddScoped<ICustomUserRepository, CustomUserRepository>();
 
+            var assemblyName = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
+
             services
                 .AddIdentityServer()
-                .AddInMemoryApiResources(Config.GetApiResources())
-                .AddInMemoryApiScopes(Config.GetApiScopes())
-                .AddInMemoryClients(Config.GetClients())
-                .AddInMemoryIdentityResources(Config.GetIdentityResources())
+                .AddConfigurationStore(options =>
+                {
+                    options.ConfigureDbContext = c => c.UseMySQL(Configuration.GetConnectionString("LocalDb"),sqlOptions => {
+                        sqlOptions.MigrationsAssembly(assemblyName);
+                    });
+                })
+                .AddOperationalStore(options =>
+                {
+                    options.ConfigureDbContext = c => c.UseMySQL(Configuration.GetConnectionString("LocalDb"), sqlOptions => {
+                        sqlOptions.MigrationsAssembly(assemblyName);
+                    });
+                })
+                //.AddInMemoryApiResources(Config.GetApiResources())
+                //.AddInMemoryApiScopes(Config.GetApiScopes())
+                //.AddInMemoryClients(Config.GetClients())
+                //.AddInMemoryIdentityResources(Config.GetIdentityResources())
                 //.AddTestUsers(Config.GetUsers()),
                 .AddDeveloperSigningCredential()
                 .AddProfileService<CustomProfileService>()

@@ -44,7 +44,8 @@ namespace IdentityServer.Client1.Controllers
 
             if (token.IsError)
             {
-                throw token.Exception;
+                ModelState.AddModelError("", "Kullanıcı adı veya şifre hatalı");
+                return View();
             }
 
             var userInfoRequest = new UserInfoRequest();
@@ -58,7 +59,7 @@ namespace IdentityServer.Client1.Controllers
                 throw userInfo.Exception;
             }
 
-            ClaimsIdentity claimsIdentity = new ClaimsIdentity(userInfo.Claims,"Cookies");
+            ClaimsIdentity claimsIdentity = new ClaimsIdentity(userInfo.Claims,"Cookies","name","role");
             ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
             var authenticationProperties = new AuthenticationProperties();
@@ -86,9 +87,9 @@ namespace IdentityServer.Client1.Controllers
                 }
             });
 
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,claimsPrincipal);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,claimsPrincipal,authenticationProperties);
 
-            return RedirectToAction("User", nameof(UserController.Index));
+            return RedirectToAction("Index","User");
         }
     }
 }

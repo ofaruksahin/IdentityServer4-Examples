@@ -6,12 +6,13 @@
 
   <ItemGroup>
     <None Remove="IdentityServer4" />
-    <None Remove="Controllers\" />
     <None Remove="Microsoft.EntityFrameworkCore" />
     <None Remove="MySql.Data.EntityFrameworkCore" />
     <None Remove="Microsoft.EntityFrameworkCore.Tools" />
     <None Remove="Microsoft.EntityFrameworkCore.Design" />
     <None Remove="Services\" />
+    <None Remove="IdentityServer4.EntityFramework" />
+    <None Remove="Seed\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="IdentityServer4" Version="4.1.2" />
@@ -25,9 +26,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="IdentityServer4.EntityFramework" Version="4.1.2" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Controllers\" />
     <Folder Include="Services\" />
+    <Folder Include="Seed\" />
   </ItemGroup>
 </Project>
